@@ -46,3 +46,6 @@ OmniGibson/Benchmark/ros_hademo_ws/install/
 OmniGibson/Benchmark/ros_hademo_ws/log/
 OmniGibson/Benchmark/ros_hademo_ws/build_backup_*/
 OmniGibson/Benchmark/ros_hademo_ws/devel_backup_*/
+OmniGibson/Benchmark/ros2_hademo_ws/build/
+OmniGibson/Benchmark/ros2_hademo_ws/install/
+OmniGibson/Benchmark/ros2_hademo_ws/log/

@@ -4,7 +4,6 @@ import argparse
 from tkinter import _flatten
 import omnigibson as og
 from omnigibson.macros import gm
-import rospy
 
 from omni.isaac.core.utils.prims import get_prim_at_path
 from scipy.spatial.transform import Rotation as R
@@ -30,7 +29,7 @@ gm.USE_GPU_DYNAMICS = True
 gm.ENABLE_HQ_RENDERING = True
 
 
-from ros_hademo_ws.src.hademo.src.action_subscriber import ResultPublishandActionSubscribe
+from ros2_transport import SocketActionTransport
 
 
 from multiprocessing import Process  
@@ -131,8 +130,7 @@ class HASimulationSystem:
         self.logger = LogSet()
 
 
-        rospy.init_node('SimNode', anonymous=True)
-        self.simnode = ResultPublishandActionSubscribe(task_name)
+        self.simnode = SocketActionTransport(task_name)
 
 
         tmp = 0
@@ -140,7 +138,7 @@ class HASimulationSystem:
         flag = False
         while og.app.is_running():
 
-            next_step_action = self.simnode._next_step_action
+            next_step_action = self.simnode.next_step_action
             if next_step_action:
                 print(next_step_action)
                 print("----------------------------------------------------------------")
@@ -166,7 +164,7 @@ class HASimulationSystem:
             og.sim.step()
             
 
-        rospy.spin()
+        self.simnode.close()
 
     def getWorldEntityName(self, env_config):
         robot_config = env_config['robots']
@@ -484,5 +482,4 @@ def main(args):
 if __name__ == '__main__':
     args = parse_args()
     main(args)
-
 

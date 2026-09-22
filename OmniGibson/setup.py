@@ -34,7 +34,7 @@ setup(
         "h5py",
         "cryptography",
         "bddl~=3.1.0",
-        "opencv-python",
+        "opencv-python==4.7.0.72",
         "nest_asyncio",
         "imageio",
         "imageio-ffmpeg",

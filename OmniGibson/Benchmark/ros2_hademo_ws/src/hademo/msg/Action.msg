@@ -1,0 +1,9 @@
+hademo/FuncAndArgs franka_0
+hademo/FuncAndArgs franka_1
+hademo/FuncAndArgs franka_2
+hademo/FuncAndArgs aliengo_0
+hademo/FuncAndArgs aliengo_1
+hademo/FuncAndArgs aliengo_2
+hademo/FuncAndArgs quadrotor_0
+hademo/FuncAndArgs quadrotor_1
+hademo/FuncAndArgs quadrotor_2
