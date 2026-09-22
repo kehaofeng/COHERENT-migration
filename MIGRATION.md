@@ -1,10 +1,9 @@
 # COHERENT 迁移说明
 
-本仓库在保留 COHERENT 原项目来源记录的同时，跟踪环境和中间件迁移过程。
 
 ## 版本分支
 
-- `upstream-original`：原项目基线，提交号为 `17554a52792e302921bbb5e5fd3b4049e25b50d4`。
+- `upstream-original`：原项目基线。
 - `ubuntu20-ros1`：在 Ubuntu 20.04 和 ROS1 Noetic 上复现时验证过的修复与路径兼容改动。
 - `ubuntu22-ros2`：迁移到 Ubuntu 22.04 和 ROS2 Humble 的版本。
 
@@ -21,9 +20,6 @@
 - OmniGibson 0.2.1
 - OpenCV 4.7.0.72
 - PyTorch 1.13.0+cu117
-- NVIDIA 驱动 580.178.04（当前测试电脑）
-
-项目需要 NVIDIA 显卡和 CUDA。Isaac Sim 已经带有运行所需的 CUDA 库，当前环境没有另外安装 CUDA Toolkit。
 
 更完整的软件包列表放在 `dependency-locks/` 中。
 
@@ -38,13 +34,6 @@
 7. 新增 `run_ros2.sh`，用于一起启动模拟器、bridge 和动作发布节点。
 8. 增加依赖版本记录，方便在其他电脑重新安装。
 
-## 测试结果
-
-- OmniGibson 可以启动、更新并正常关闭。
-- ROS2 工作区可以成功编译。
-- ROS2 消息可以传给 Python 3.7 测试程序，结果也可以返回。
-- 启动脚本退出后没有遗留 ROS2 和模拟器进程。
-- 当前电脑是 RTX 4060 Laptop 8GB。完整 Merom 场景会因为显存不足出现 CUDA error 700，所以完整机器人动作需要在显存更大的电脑上继续测试。
 
 ## 没有放进 GitHub 的内容
 
@@ -53,5 +42,3 @@
 - Conda 环境目录
 - API Key
 - 构建文件和实验日志
-
-这些内容需要在新电脑上单独安装或复制。
