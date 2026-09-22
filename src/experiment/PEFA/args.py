@@ -1,4 +1,5 @@
 import argparse
+import os
 
 # import torch
 import pdb
@@ -13,10 +14,11 @@ def get_args():
                     help='Select a simulation environment')
     parser.add_argument('--task', type=int, required=True, nargs='+', 
                     help='Specifies the ID of the task to run. Enter at least one parameter.')
-    parser.add_argument('--source', default='openai', choices=['huggingface', 'openai'], 
-                    help='openai API or load huggingface models')
-    parser.add_argument('--lm_id', default='gpt-4-0125-preview',
-                    help='name for openai engine or huggingface model name/path')
+    parser.add_argument('--source', default='deepseek', choices=['deepseek', 'openai'],
+                    help='Model API provider (local inference is not implemented)')
+    parser.add_argument('--lm_id', default=None,
+                    help='Model ID; defaults to deepseek-v4-pro for DeepSeek')
+    parser.add_argument('--log_dir', default='./log', help='Experiment log directory')
     parser.add_argument('--debug', action='store_true', default=False,
                     help='debugging mode')
     parser.add_argument('--oracle_prompt_path', default="./prompt/oracle_prompt.txt" ,
@@ -29,8 +31,9 @@ def get_args():
                     help='path of robot_arm_prompt')
     parser.add_argument('--judge_prompt_path', default="./prompt/judge_prompt.txt",
                     help='path of judge_prompt')
+    parser.add_argument('--base_url', default=None, help='Override the API endpoint')
     parser.add_argument('--api_key', default='',
-                    help='please enter your openai api_key')
+                    help='API key; prefer DEEPSEEK_API_KEY or OPENAI_API_KEY environment variable')
     parser.add_argument('--organization', default='', 
                     help='please enter your openai organization')
     parser.add_argument("--t", default=0, type=float)
@@ -42,6 +45,16 @@ def get_args():
     parser.add_argument("--n", default=1, type=int)
 
     args = parser.parse_args()
+    if args.source == 'deepseek':
+        args.api_key = args.api_key or os.environ.get('DEEPSEEK_API_KEY', '')
+        args.base_url = args.base_url or 'https://api.deepseek.com'
+        args.lm_id = args.lm_id or 'deepseek-v4-pro'
+        if args.n != 1:
+            parser.error('DeepSeek integration requires --n 1')
+    else:
+        args.api_key = args.api_key or os.environ.get('OPENAI_API_KEY', '')
+        args.base_url = args.base_url or 'https://api.openai.com/v1'
+        args.lm_id = args.lm_id or 'gpt-4-0125-preview'
     return args
 
 if __name__ == '__main__':

@@ -5,6 +5,7 @@ import openai
 import json
 from openai import OpenAIError, OpenAI
 import backoff
+from model_client import create_client, request_params
 
 
 class LLM:
@@ -17,14 +18,14 @@ class LLM:
 		self.chat = True
 		self.total_cost = 0
 		self.device = None
-		self.record_dir = f'./log/{args.env}.txt'
+		self.record_dir = f'{args.log_dir}/{args.env}.txt'
 
-		if self.source == 'openai':
+		if self.source in ('deepseek', 'openai'):
 
 			api_key = args.api_key  # your openai api key
 			organization= args.organization # your openai organization
 
-			client = OpenAI(api_key = api_key, organization=organization)
+			client = create_client(args)
 			if self.chat:
 				self.sampling_params = {
 					"max_tokens": args.max_tokens,
@@ -34,20 +35,21 @@ class LLM:
 				}
 
 		def lm_engine(source, lm_id, device):
-			
-			@backoff.on_exception(backoff.expo, OpenAIError)
+
+			@backoff.on_exception(backoff.expo, OpenAIError, max_tries=3,
+                giveup=lambda e: getattr(e, "status_code", None) in (400, 401, 403, 404, 422))
 			def _generate(prompt, sampling_params):
 				usage = 0
-				if source == 'openai':
+				if source in ('deepseek', 'openai'):
 					try:
 						if self.chat:
-							prompt.insert(0,{"role":"system", "content":"You are a helper assistant."})
+							prompt = [{"role":"system", "content":"You are a helper assistant."}] + prompt
 							response = client.chat.completions.create(
-                                model=lm_id, messages=prompt, **sampling_params
+                                model=lm_id, messages=prompt, **request_params(source, sampling_params)
                             )
 							if self.debug:
-								with open(f"./chat_raw.json", 'a') as f:
-									f.write(json.dumps(response, indent=4))
+								with open(f"{self.args.log_dir}/chat_raw.json", 'a') as f:
+									f.write(response.model_dump_json(indent=4))
 									f.write('\n')
 							generated_samples = [response.choices[i].message.content for i in
                                                     range(sampling_params['n'])]
@@ -62,7 +64,7 @@ class LLM:
 					except OpenAIError as e:
 						print(e)
 						raise e
-				
+
 				else:
 					raise ValueError("invalid source")
 				return generated_samples, usage
@@ -72,7 +74,14 @@ class LLM:
 		self.generator = lm_engine(self.source, self.lm_id, self.device)
 
 	def parse_answer(self, available_actions, text):
-		
+		# A standalone option refers to the current request's candidate list.
+		option_text = text.strip().upper()
+		if len(option_text) == 1 and 'A' <= option_text <= 'Z':
+			index = ord(option_text) - ord('A')
+			if index < len(available_actions):
+				return available_actions[index]
+			return None
+
 		text = text.replace("_", " ")
 		text = text.replace("takeoff from", "takeoff_from")
 		text = text.replace("land on", "land_on")
@@ -93,7 +102,7 @@ class LLM:
 		print("WARNING! No available action parsed!!! Output plan NONE!\n")
 		return None
 
-	def get_available_plans(self, agent_node, next_rooms, all_landable_surfaces, landable_surfaces, on_surfaces, 
+	def get_available_plans(self, agent_node, next_rooms, all_landable_surfaces, landable_surfaces, on_surfaces,
 						 grabbed_objects, reached_objects, unreached_objecs, on_same_surface_objects
 						 ):
 		"""
@@ -157,7 +166,7 @@ class LLM:
 							available_plans.append(f"[putinto] <{grabbed_objects['class_name']}>({grabbed_objects['id']}) into <{reached_object['class_name']}>({reached_object['id']})")
 						if 'SURFACES' in reached_object['properties']:
 							available_plans.append(f"[puton] <{grabbed_objects['class_name']}>({grabbed_objects['id']}) on <{reached_object['class_name']}>({reached_object['id']})")
-			
+
 			if len(unreached_objecs) != 0:
 				for unreached_object in unreached_objecs:
 					available_plans.append(f"[movetowards] <{unreached_object['class_name']}>({unreached_object['id']})")
@@ -179,7 +188,7 @@ class LLM:
 						available_plans.append(f"[grab] <{on_same_surface_object['class_name']}>({on_same_surface_object['id']})")
 
 				if grabbed_objects is not None:
-					
+
 					if 'CONTAINERS' in on_same_surface_object['properties'] and ('OPEN' in on_same_surface_object['states'] or "OPEN_FOREVER" in on_same_surface_object['states']):
 						available_plans.append(f"[putinto] <{grabbed_objects['class_name']}>({grabbed_objects['id']}) into <{on_same_surface_object['class_name']}>({on_same_surface_object['id']})")
 					if 'SURFACES' in on_same_surface_object['properties']:
@@ -192,14 +201,14 @@ class LLM:
 		print(available_plans)
 		return plans, len(available_plans), available_plans
 
-		
+
 	def run(self, agent_node, chat_agent_info,current_room, next_rooms, all_landable_surfaces,landable_surfaces, on_surfaces, grabbed_objects, reached_objects,unreached_objecs, on_same_surface_objects):
 		info = {"num_available_actions": None,
 			"prompts": None,
 			"outputs": None,
 			"plan": None,
 			"action_list": None,
-			"cost":self.total_cost, 
+			"cost":self.total_cost,
 			f"<{agent_node['class_name']}>({agent_node['id']}) total_cost": self.total_cost}
 
 		prompt_path = chat_agent_info['prompt_path']
@@ -208,11 +217,11 @@ class LLM:
 
 		available_plans, num, available_plans_list = self.get_available_plans(agent_node, next_rooms, all_landable_surfaces,landable_surfaces, on_surfaces, grabbed_objects, reached_objects,unreached_objecs, on_same_surface_objects,
 																		 )
-		
+
 		agent_prompt = agent_prompt.replace('#OBSERVATION#', chat_agent_info['observation'])
 		agent_prompt = agent_prompt.replace('#ACTIONLIST#', available_plans)
 		agent_prompt = agent_prompt.replace('#INSTRUCTION#', chat_agent_info['instruction'])
-		
+
 		if self.debug:
 			print(f"cot_prompt:\n{agent_prompt}")
 		chat_prompt = [{"role": "user", "content": agent_prompt}]
@@ -240,7 +249,7 @@ class LLM:
 			self.write_log_to_file(output+'\n2222222222222')
 			sentences = output.split(".")
 			first_sentence = sentences[0].upper()
-			if first_sentence != "SORRY I CANNOT": 
+			if first_sentence != "SORRY I CANNOT":
 
 				if self.debug:
 					print(f"cot_output:\n{output}")
@@ -281,12 +290,12 @@ class LLM:
 			output = output[16].lower() + output[17:]
 			message = f"Sorry, the current actions I can perform cannot complete this instrcution. Possible reasons would be {output} My current actionlist is: {available_plans}"
 			self.write_log_to_file(message+'\n4444444444444')
-		info['cost'] = self.total_cost	
+		info['cost'] = self.total_cost
 		self.write_log_to_file(f"total cost: {self.total_cost}")
 		info.update({"outputs": message})
 		return message, info
 
 	def write_log_to_file(self,log_message, file_name=None):
 		file_name = self.record_dir
-		with open(file_name, 'a') as file:  
-			file.write(log_message + '\n')  
+		with open(file_name, 'a') as file:
+			file.write(log_message + '\n')

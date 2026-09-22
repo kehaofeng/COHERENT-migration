@@ -1,4 +1,5 @@
 import json
+from pathlib import Path
 from LLM_agent import LLM_agent
 from args import get_args
 from LLM_oracle import ArenaMP
@@ -8,14 +9,15 @@ import argparse
 
 args = get_args()
 
-def write_log_to_file(log_message, file_name=f'./log/{args.env}.txt'):
-        with open(file_name, 'a') as file:  
-            file.write(log_message + '\n')  
+def write_log_to_file(log_message, file_name=f'{args.log_dir}/{args.env}.txt'):
+        with open(file_name, 'a') as file:
+            file.write(log_message + '\n')
 
 
 if __name__ == '__main__':
+    Path(args.log_dir).mkdir(parents=True, exist_ok=True)
 
-    
+
     with open(f'./env/{args.env}.json') as file:
         data = json.load(file)
     '''
@@ -28,7 +30,7 @@ if __name__ == '__main__':
     '''
     tasklist = args.task
     # S = [[] for _ in range(len(tasklist))]
-    # L = [[] for _ in range(len(tasklist))] 
+    # L = [[] for _ in range(len(tasklist))]
     steps_list, tasks_result = [], []
     success_tasks, failed_tasks = [], []
 
@@ -110,9 +112,9 @@ if __name__ == '__main__':
         else:
             failed_tasks.append(task_id)
 
-    write_log_to_file('average steps:', sum(steps_list)/len(steps_list) if len(steps_list) > 0 else None)
-    write_log_to_file('successful tasks:', success_tasks if len(success_tasks) > 0 else None)
-    write_log_to_file('failed tasks:', failed_tasks if len(failed_tasks) > 0 else None)
+    write_log_to_file(f'average steps: {sum(steps_list)/len(steps_list) if steps_list else None}')
+    write_log_to_file(f'successful tasks: {success_tasks}')
+    write_log_to_file(f'failed tasks: {failed_tasks}')
     print('average steps:', sum(steps_list)/len(steps_list) if len(steps_list) > 0 else None)
     print('successful tasks:', success_tasks if len(success_tasks) > 0 else None )
-    print('failed tasks:', failed_tasks if len(failed_tasks) > 0 else None)    
+    print('failed tasks:', failed_tasks if len(failed_tasks) > 0 else None)
