@@ -1,25 +1,21 @@
-# Dependency snapshots
+# 依赖版本快照
 
-COHERENT uses three deliberately separate runtime layers. Do not merge their
-package lists into one Python environment.
+COHERENT 使用三套刻意隔离的运行环境。不要把这些软件包列表合并安装到同一个 Python 环境中。
 
-| Layer | Python | Key versions | Snapshot |
+| 环境层 | Python | 关键版本 | 快照文件 |
 | --- | --- | --- | --- |
-| Planning | Conda 3.10.21 | NumPy 1.26.4, PyYAML 6.0.3, OpenAI 3.17.0 | `coherent-pip.txt` |
-| Simulation | Conda 3.7.13 + Isaac runtime | OmniGibson 0.2.1, OpenCV 4.7.0.72, NumPy 1.21.6 | `omnigibson-pip.txt` |
-| ROS 2 | Ubuntu system Python 3.10.12 | ROS 2 Humble, ros-base 0.10.0 | `ros2-humble-deb.txt` |
-| ROS 2 Python support | Ubuntu system Python 3.10.12 | NumPy 1.21.5, SciPy 1.8.0, PyYAML 5.4.1 | `ros2-system-python-deb.txt` |
+| 规划模块 | Conda 3.10.21 | NumPy 1.26.4、PyYAML 6.0.3、OpenAI 3.17.0 | `coherent-pip.txt` |
+| 模拟器 | Conda 3.7.13 + Isaac runtime | OmniGibson 0.2.1、OpenCV 4.7.0.72、NumPy 1.21.6 | `omnigibson-pip.txt` |
+| ROS2 | Ubuntu 系统 Python 3.10.12 | ROS2 Humble、ros-base 0.10.0 | `ros2-humble-deb.txt` |
+| ROS2 Python 支持包 | Ubuntu 系统 Python 3.10.12 | NumPy 1.21.5、SciPy 1.8.0、PyYAML 5.4.1 | `ros2-system-python-deb.txt` |
 
-Isaac Sim 2022.2.0 supplies additional runtime modules outside Conda's package
-metadata, including PyTorch 1.13.0+cu117, torchvision 0.14.0+cu117 and Warp
-0.6.1. Those versions therefore do not appear in `omnigibson-pip.txt`.
+Isaac Sim 2022.2.0 还提供了一些不在 Conda 软件包元数据中的运行模块，包括 PyTorch 1.13.0+cu117、torchvision 0.14.0+cu117 和 Warp 0.6.1，因此这些版本不会出现在 `omnigibson-pip.txt` 中。
 
-The files are records of the verified Ubuntu 22.04 machine, not instructions to
-upgrade every dependency. In particular, Isaac Sim's bundled packages have
-known historical metadata conflicts; blindly upgrading them can break binary
-compatibility.
+项目需要 NVIDIA 显卡和 CUDA。当前使用 NVIDIA 驱动 580.178.04；Isaac Sim 自带 CUDA 运行库，因此没有另外安装 CUDA Toolkit。
 
-Regenerate the snapshots after an intentional dependency change:
+这些文件记录的是已经验证过的 Ubuntu 22.04 环境，不要直接把所有包升级到最新版。
+
+只有在有意修改依赖后才重新生成快照：
 
 ```bash
 python -m pip list --format=freeze | LC_ALL=C sort

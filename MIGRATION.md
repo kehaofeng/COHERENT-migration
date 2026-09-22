@@ -1,62 +1,57 @@
-# COHERENT Migration
+# COHERENT 迁移说明
 
-This repository preserves the original COHERENT Git history while tracking the
-project's environment and middleware migration.
+本仓库在保留 COHERENT 原项目来源记录的同时，跟踪环境和中间件迁移过程。
 
-## Version lines
+## 版本分支
 
-- `upstream-original`: original upstream baseline at commit
-  `17554a52792e302921bbb5e5fd3b4049e25b50d4`.
-- `ubuntu20-ros1`: verified fixes and portability changes made while reproducing
-  the project on Ubuntu 20.04 with ROS1 Noetic.
-- `ubuntu22-ros2`: ongoing migration to Ubuntu 22.04 and ROS2 Humble.
+- `upstream-original`：原项目基线，提交号为 `17554a52792e302921bbb5e5fd3b4049e25b50d4`。
+- `ubuntu20-ros1`：在 Ubuntu 20.04 和 ROS1 Noetic 上复现时验证过的修复与路径兼容改动。
+- `ubuntu22-ros2`：迁移到 Ubuntu 22.04 和 ROS2 Humble 的版本。
 
-The original project is available at
-<https://github.com/MrKeee/COHERENT>. The migration repository does not claim
-ownership of the upstream project or its assets.
+原项目地址：<https://github.com/MrKeee/COHERENT>。本迁移仓库不声明拥有原项目或其资源。
 
-## Compatibility boundary
+## 环境版本
 
-The migration intentionally keeps the authors' modified Isaac Sim 2022.2.0 and
-the repository's modified OmniGibson 0.2.1. Upgrading either simulator is outside
-the current migration scope.
+- Ubuntu 22.04
+- ROS2 Humble
+- Miniconda
+- 规划环境：Python 3.10.21
+- 模拟器环境：Python 3.7.13
+- Isaac Sim 2022.2.0
+- OmniGibson 0.2.1
+- OpenCV 4.7.0.72
+- PyTorch 1.13.0+cu117
+- NVIDIA 驱动 580.178.04（当前测试电脑）
 
-ROS2 Humble uses system Python 3.10, while Isaac Sim 2022.2.0 embeds Python
-3.7.13. They should remain in separate processes; ROS2's `rclpy` must not be
-forced into the Isaac Python environment. The migration uses a loopback TCP/JSON
-bridge for action and result exchange.
+项目需要 NVIDIA 显卡和 CUDA。Isaac Sim 已经带有运行所需的 CUDA 库，当前环境没有另外安装 CUDA Toolkit。
 
-## Current issue and change ledger
+更完整的软件包列表放在 `dependency-locks/` 中。
 
-| Observed problem | Root cause | Migration change | Verification |
-| --- | --- | --- | --- |
-| The original setup selected OpenCV 5.0 in 2026 | `opencv-python` had no version bound | Pin `opencv-python==4.7.0.72` in `OmniGibson/setup.py` | Installed metadata, import and OmniGibson startup verified |
-| First Isaac/OmniGibson startup exited with code 137 | 15 GiB RAM was exhausted during RTX shader compilation and the system had no swap | Document an 8 GiB swap requirement for this test machine | Shader compilation completed; later empty-app startup took about 12 seconds |
-| `agents` could not be imported | Required `COHERENT_PATH` was absent in the shell | Keep paths environment-driven; do not add a machine path to source | Empty OmniGibson app started, updated and shut down with exit code 0 |
-| ROS1 code imported `rospy` inside Isaac's Python 3.7 process | Humble `rclpy` is built for Python 3.10 and is not ABI-compatible with Python 3.7 | Add `ros2_hademo_ws`, `hademo_nodes/sim_bridge.py`, and Python-3.7-compatible `ros2_transport.py` | Custom ROS2 Action reached a Python 3.7 fake simulator and Result returned successfully |
-| ROS1 message name `Func_and_Args` failed ROS2 naming rules | ROS2 interface type files require UpperCamelCase names | Rename the ROS2 copy to `FuncAndArgs`; retain the original ROS1 workspace unchanged | `colcon build` and Python message imports pass |
-| ROS2 launcher could leave child nodes after simulator failure | Stopping a launcher PID did not reliably stop its descendant Python processes | Run each service in its own session/process group and clean up by PGID | SIGINT timeout test leaves no simulator, bridge, or publisher process |
-| Full Merom scene exits with PhysX CUDA error 700 / code 139 | Existing full-scene GPU/PhysX failure on the RTX 4060 Laptop 8 GB configuration | No simulator-capacity source changes retained; record as a hardware/runtime validation boundary | Reproduced before the ROS2 bridge connected; empty app and transport tests still pass |
+## 修改内容
 
-Dependency snapshots are stored under `dependency-locks/`. They separate the
-planning Conda environment, the Isaac/OmniGibson Conda environment, ROS2 Debian
-packages, and ROS2 system-Python support packages.
+1. 修复了代码中的作者电脑绝对路径，改用 `COHERENT_PATH` 和 `ISAAC_PATH`。
+2. 将 OpenCV 固定为 4.7.0.72，避免自动安装到 OpenCV 5。
+3. 保留原 ROS1 工作区，另外新增 ROS2 Humble 工作区。
+4. 将 ROS1 自定义消息改成 ROS2 消息，其中 `Func_and_Args.msg` 改名为 `FuncAndArgs.msg`。
+5. 新增 ROS2 bridge，让 ROS2 的 Python 3.10 可以和 Isaac Sim 的 Python 3.7 通信。
+6. 修改 `sim.py`，让模拟器通过 bridge 接收动作并返回结果。
+7. 新增 `run_ros2.sh`，用于一起启动模拟器、bridge 和动作发布节点。
+8. 增加依赖版本记录，方便在其他电脑重新安装。
 
-## Files not stored in Git
+## 测试结果
 
-Large datasets, robot assets, Isaac Sim installations, generated ROS build
-trees, experiment logs, credentials, and machine-local configuration are
-excluded. They must be restored separately according to their original licenses
-and installation instructions.
+- OmniGibson 可以启动、更新并正常关闭。
+- ROS2 工作区可以成功编译。
+- ROS2 消息可以传给 Python 3.7 测试程序，结果也可以返回。
+- 启动脚本退出后没有遗留 ROS2 和模拟器进程。
+- 当前电脑是 RTX 4060 Laptop 8GB。完整 Merom 场景会因为显存不足出现 CUDA error 700，所以完整机器人动作需要在显存更大的电脑上继续测试。
 
-## Migration order
+## 没有放进 GitHub 的内容
 
-1. Verify NVIDIA driver and Vulkan support on Ubuntu 22.04.
-2. Restore and test the modified Isaac Sim 2022.2.0 installation.
-3. Rebuild the pinned OmniGibson environment and restore external data/assets.
-4. Validate simulator startup, scene loading, and each robot incrementally.
-5. ~~Build equivalent ROS2 message and test nodes with ROS2 Humble.~~
-6. ~~Add and unit-test the Python 3.7 to Python 3.10 process bridge.~~
-7. Validate one action on target-class hardware, a fixed text plan, and finally
-   PEFA integration. This remains blocked on the current laptop by the recorded
-   full-scene PhysX/CUDA failure.
+- Isaac Sim 安装目录
+- 大型数据集和机器人资源
+- Conda 环境目录
+- API Key
+- 构建文件和实验日志
+
+这些内容需要在新电脑上单独安装或复制。
