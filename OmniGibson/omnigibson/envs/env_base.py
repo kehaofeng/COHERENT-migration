@@ -14,6 +14,7 @@ from omnigibson.utils.python_utils import assert_valid_key, merge_nested_dicts, 
 import sys
 import os
 coherent_path = os.environ.get('COHERENT_PATH')
+sys.path.append(f'{coherent_path}/OmniGibson')
 sys.path.append(f'{coherent_path}/OmniGibson/Benchmark')
 
 from Benchmark.agents import *

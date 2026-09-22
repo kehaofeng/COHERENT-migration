@@ -1,9 +1,9 @@
 import sys
-sys.path.append("/home/pjlab/.local/share/ov/pkg/isaac_sim-2022.2.0/exts/omni.isaac.quadrotor")
+import os
+sys.path.append(os.path.join(os.environ['ISAAC_PATH'], 'exts', 'omni.isaac.quadrotor'))
 
 
 import numpy as np
-import os
 from omni.isaac.quadrotor.crazyflie import Crazyflie
 from omni.isaac.core.objects import DynamicCuboid, FixedCuboid
 from omni.isaac.core.utils.stage import open_stage, add_reference_to_stage
@@ -1003,5 +1003,4 @@ class QuadrotorAgent(XFormPrim, Crazyflie):
         urdf_path = assets_root_path + "/Franka/franka.urdf"
         urdf_path = os.path.join(ASSERT_ROOT, 'Franka/panda_arm_hand.urdf')
         return urdf_path
-
 

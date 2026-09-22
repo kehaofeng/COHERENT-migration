@@ -43,6 +43,7 @@ setup(
         "pymeshlab",
         "click",
         "rospkg",
+        "netifaces",
         "tqdm"
     ],
     tests_require=[],
