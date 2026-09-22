@@ -25,3 +25,24 @@ docs/apidoc
 
 # vscode
 .vscode/
+
+# Local environments and credentials
+.env
+.env.*
+!.env.example
+
+# Experiment output
+logs/
+src/experiment/PEFA/log/deepseek_*/
+
+# External simulator data and robot assets
+OmniGibson/omnigibson/data/
+OmniGibson/Benchmark/assets/
+
+# ROS / colcon generated output and local backups
+OmniGibson/Benchmark/ros_hademo_ws/build/
+OmniGibson/Benchmark/ros_hademo_ws/devel/
+OmniGibson/Benchmark/ros_hademo_ws/install/
+OmniGibson/Benchmark/ros_hademo_ws/log/
+OmniGibson/Benchmark/ros_hademo_ws/build_backup_*/
+OmniGibson/Benchmark/ros_hademo_ws/devel_backup_*/
