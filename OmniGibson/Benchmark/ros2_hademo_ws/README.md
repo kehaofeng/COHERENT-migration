@@ -4,9 +4,25 @@
 
 Isaac Sim 使用 Python 3.7，ROS2 Humble 使用 Python 3.10，所以增加了一个 bridge，让两个环境可以互相传递动作和结果。
 
+## 第一次准备
+
+先安装 Isaac Sim 2022.2.0、Miniconda 和 ROS2 Humble，然后进入项目目录：
+
+```bash
+cd /你的路径/COHERENT
+export COHERENT_PATH="$PWD"
+source ~/miniconda3/etc/profile.d/conda.sh
+cd OmniGibson
+./scripts/setup.sh
+```
+
+运行 `setup.sh` 时，按照提示输入 Isaac Sim 2022.2.0 的安装路径，并使用默认环境名 `omnigibson`。
+
 ## 构建
 
 ```bash
+cd /你的路径/COHERENT
+export COHERENT_PATH="$PWD"
 sudo rosdep init                 # 每台机器只需执行一次
 rosdep update                    # 首次执行，之后按需更新索引
 cd "$COHERENT_PATH/OmniGibson/Benchmark/ros2_hademo_ws"
@@ -22,6 +38,8 @@ rosdep install --from-paths src --ignore-src -r -y
 cd "$COHERENT_PATH/OmniGibson/Benchmark"
 ./run_ros2.sh Merom_1_int_Task1
 ```
+
+脚本会自动启动 OmniGibson、ROS2 bridge 和动作发布节点。按 `Ctrl+C` 可以停止。
 
 bridge 默认使用 `127.0.0.1:8765`。
 
