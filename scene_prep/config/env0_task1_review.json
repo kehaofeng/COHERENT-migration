@@ -1,0 +1,82 @@
+{
+  "schema_version": 1,
+  "env": "env0",
+  "task_id": 1,
+  "base_scene_status": "candidate",
+  "base_scene": "OmniGibson/Benchmark/tasks/Merom_1_int_best.json",
+  "demo": "OmniGibson/Benchmark/tasks/Merom_1_int_Task1.py",
+  "reason": "Merom 演示已有餐桌、无人机及餐桌降落点，可作为试点参照；完整初始布局尚不等同于规划任务。",
+  "room_alias_candidates": {
+    "bedroom_0": "bedroom_0",
+    "childroom_0": "childs_room_0",
+    "livingroom_0": "living_room_0",
+    "kitchen_0": "kitchen_0"
+  },
+  "category_candidates": {
+    "coffee table": ["coffee_table"],
+    "dining table": ["breakfast_table"],
+    "bread": ["bread_slice", "baguette", "sourdough", "pack_of_bread"],
+    "kitchen table": ["countertop", "commercial_kitchen_table", "breakfast_table", "bottom_cabinet"],
+    "high table": ["breakfast_table", "desk", "bottom_cabinet"],
+    "cabinet": ["bottom_cabinet", "top_cabinet", "wardrobe"],
+    "high kitchen table": ["countertop", "commercial_kitchen_table", "breakfast_table", "shelf"],
+    "toy box": ["toy_box"]
+  },
+  "agent_asset_references": {
+    "FrankaAgent": {
+      "entry": "OmniGibson/Benchmark/assets/Franka/franka.usda",
+      "source": "OmniGibson/Benchmark/agents/franka_agent.py",
+      "symbol": "FrankaAgent.usd_path"
+    },
+    "AliengoAgent": {
+      "entry": "OmniGibson/Benchmark/assets/Aliengo_arm/aliengo-z1_fixed_base.usda",
+      "source": "OmniGibson/Benchmark/agents/aliengo_agent.py",
+      "symbol": "AliengoAgent.usd_path",
+      "note": "此条是当前 fixed_base=True 演示分支；不是所有机器人配置的通用路径。"
+    },
+    "QuadrotorAgent": {
+      "entry": "OmniGibson/Benchmark/assets/Crazyflie/cf2x_with_basket.usda",
+      "source": "OmniGibson/Benchmark/agents/quadrotor_agent.py",
+      "symbol": "QuadrotorAgent.usd_path"
+    }
+  },
+  "node_notes": {
+    "0": {"label_zh": "卧室"},
+    "1": {"label_zh": "卧室地面"},
+    "2": {"label_zh": "儿童房"},
+    "3": {"label_zh": "儿童房地面"},
+    "4": {"label_zh": "客厅", "note": "规划把餐桌归入客厅；场景给餐桌标记 dining_room_0。是否合并为同一规划区域仍需明确。"},
+    "5": {"label_zh": "客厅地面"},
+    "6": {"label_zh": "厨房"},
+    "7": {"label_zh": "厨房地面"},
+    "8": {"label_zh": "卧室与客厅之间的门", "preferred_scene_names": ["door_duymuw_0"], "note": "演示新增门只有候选依据；defaults 中门名称与 articulations 键存在编号差异，需核对连接房间和关闭状态。"},
+    "9": {"label_zh": "儿童房与客厅之间的门", "preferred_scene_names": ["door_duymuw_1"], "note": "需要确认门洞对应关系，并落实 OPEN_FOREVER 初始要求。"},
+    "10": {"label_zh": "客厅与厨房之间的通道", "note": "规划为永久开放连接；需要确定实际门洞或通道，不能随便绑定同类门。"},
+    "11": {"label_zh": "沙发", "preferred_scene_names": ["sofa_xhxdqf_0"]},
+    "12": {"label_zh": "茶几", "preferred_scene_names": ["coffee_table_fqluyq_0"]},
+    "13": {"label_zh": "餐桌", "preferred_scene_names": ["breakfast_table_skczfi_0"], "note": "已有模型、位姿和演示降落点；餐桌实际场景区域为 dining_room_0，规划要求在 livingroom_0，不能忽略此差异。"},
+    "14": {"label_zh": "冰箱", "preferred_scene_names": ["fridge_xyejdx_0"], "note": "还需确认 CLOSED 状态和盘子在冰箱内的初始放置。"},
+    "22": {"label_zh": "无人机", "note": "规划要求在儿童房地面，演示 cfg 的出生位置对应 defaults 的客厅地面降落点；需要重设试点初始位置。"},
+    "23": {"label_zh": "机械狗"},
+    "24": {"label_zh": "餐桌上的机械臂"},
+    "25": {"label_zh": "无人机携带的篮筐", "note": "无人机资产名为 cf2x_with_basket.usda；需确认篮筐子物体和绑定方式，不应再无条件新增一个独立篮子。"},
+    "26": {"label_zh": "面包", "note": "本任务初始图没有面包的 ON/INSIDE 关系，不能套用 env0/task2 的微波炉位置。还含 HOT 状态。"},
+    "27": {"label_zh": "卧室床", "preferred_scene_names": ["bed_zrumze_1"]},
+    "28": {"label_zh": "儿童房床", "preferred_scene_names": ["bed_zrumze_0"]},
+    "32": {"label_zh": "厨房桌", "note": "需要在候选台面中选型，并核对 LOW_HEIGHT 要求。"},
+    "33": {"label_zh": "卧室高桌", "note": "需要明确哪一个可承重、可降落的高台，不能把任意柜子自动当成高桌。"},
+    "34": {"label_zh": "儿童房柜子", "note": "需核对所在房间、容器结构和 CLOSED 状态。"},
+    "35": {"label_zh": "厨房高桌", "note": "需单独选型和位置，不能与厨房矮桌无依据地合并。"},
+    "44": {"label_zh": "儿童房教科书", "note": "初始应在儿童房床上；即使只有一个模型候选，位置仍需配置。"},
+    "45": {"label_zh": "儿童房玩具箱", "note": "初始应在儿童房地面；需要选择具体型号和开放容器形态。"},
+    "50": {"label_zh": "卧室高桌上的第二台机械臂", "note": "演示只含 franka_0 一台机械臂；本节点要有独立实例和出生位置。"},
+    "53": {"label_zh": "冰箱里的盘子", "note": "需选型号，并在冰箱内部放置；不能只设置在冰箱附近。"},
+    "55": {"label_zh": "餐桌上的太阳镜", "note": "需选型号并指定桌面位置，检查是否占用无人机降落区域。"}
+  },
+  "evidence_files": [
+    "OmniGibson/Benchmark/tasks/defaults_Merom_1_int_Task1.py",
+    "OmniGibson/chosen_scenes/Mero_1_int/fig1.png",
+    "OmniGibson/chosen_scenes/Mero_1_int/fig2.png"
+  ],
+  "review_status": "候选工作表；不是正式可加载任务配置。机器人入口依据静态代码核对，内部资产依赖尚未验证。"
+}

@@ -1,0 +1,8 @@
+{
+  "worksheet_valid": true,
+  "problems": [],
+  "node_count": 31,
+  "ready_to_generate": false,
+  "runtime_status": "not_tested",
+  "note": "此检查仅验工作表结构、来源一致性和已记录文件；候选选择、状态、布局、加密内部依赖及实际加载仍待处理。"
+}

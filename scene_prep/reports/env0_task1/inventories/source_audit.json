@@ -1,0 +1,52 @@
+[
+  {
+    "env": "env0",
+    "task_count": 21,
+    "source": "env/env0.json",
+    "sha256": "743e579aed00d731f840086d83f46fdaf0e9d765baea177440667e40f63c8ce0",
+    "pefa_copy_exists": true,
+    "pefa_semantically_equal": true,
+    "task_id_index_mismatches": [],
+    "duplicate_task_ids": []
+  },
+  {
+    "env": "env1",
+    "task_count": 21,
+    "source": "env/env1.json",
+    "sha256": "13a76930c0e78d9063fd22615f2281176bcefb1ae5b8aaa8c36bf1d5ad1ec240",
+    "pefa_copy_exists": true,
+    "pefa_semantically_equal": true,
+    "task_id_index_mismatches": [],
+    "duplicate_task_ids": []
+  },
+  {
+    "env": "env2",
+    "task_count": 20,
+    "source": "env/env2.json",
+    "sha256": "b36abf6f8476091f0313c35f9be3b4c6a927931388f4841bb20531d80015cf3a",
+    "pefa_copy_exists": true,
+    "pefa_semantically_equal": true,
+    "task_id_index_mismatches": [],
+    "duplicate_task_ids": []
+  },
+  {
+    "env": "env3",
+    "task_count": 20,
+    "source": "env/env3.json",
+    "sha256": "6d2c5a9966ed82ed04f95016514b9f5c919315ee238c0bb342269fb0191258c5",
+    "pefa_copy_exists": true,
+    "pefa_semantically_equal": true,
+    "task_id_index_mismatches": [],
+    "duplicate_task_ids": []
+  },
+  {
+    "env": "env4",
+    "task_count": 20,
+    "source": "env/env4.json",
+    "sha256": "2bff74f4ba3de44eabe80f117c73a736b9fe1cc1d83d92e79b520e6c96f12c5c",
+    "pefa_copy_exists": true,
+    "pefa_semantically_equal": true,
+    "task_id_index_mismatches": [],
+    "duplicate_task_ids": []
+  }
+]

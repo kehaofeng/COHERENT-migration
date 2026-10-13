@@ -1,0 +1,232 @@
+<div id="coherent-asset-review" class="coherent-asset-review">
+  <style>
+    #coherent-asset-review { color: var(--foreground); font-family: Arial, SimSun, "Noto Serif CJK SC", "AR PL UMing CN", serif; }
+    #coherent-asset-review * { font-family: inherit; }
+    #coherent-asset-review .review-heading { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 8px 18px; }
+    #coherent-asset-review .review-heading h2 { margin-bottom: 0; }
+    #coherent-asset-review .review-subtitle { color: var(--muted-foreground); margin: 4px 0 15px; }
+    #coherent-asset-review .review-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 10px; margin-bottom: 13px; }
+    #coherent-asset-review .review-controls label { flex: 1 1 165px; min-width: 0; }
+    #coherent-asset-review .review-controls input,
+    #coherent-asset-review .review-controls select { width: 100%; }
+    #coherent-asset-review .review-meta { display: flex; flex-wrap: wrap; gap: 6px 18px; margin: 0 0 12px; color: var(--muted-foreground); }
+    #coherent-asset-review .review-meta strong { color: var(--foreground); font-weight: 500; }
+    #coherent-asset-review .review-map { display: block; width: 100%; max-height: 440px; overflow: visible; }
+    #coherent-asset-review .review-map .zone { stroke: var(--border); stroke-width: .025; }
+    #coherent-asset-review .review-map .subzone { stroke: var(--muted-foreground); stroke-width: .025; stroke-dasharray: .14 .1; }
+    #coherent-asset-review .review-map .zone-label { fill: var(--foreground); font-weight: 500; }
+    #coherent-asset-review .review-map .fixed-mark,
+    #coherent-asset-review .review-map .door-mark,
+    #coherent-asset-review .review-map .agent-mark { fill: var(--background); stroke: var(--foreground); stroke-width: .035; }
+    #coherent-asset-review .review-map .mark-label { fill: var(--foreground); font-family: Arial, SimSun, "Noto Serif CJK SC", serif; font-weight: 500; }
+    #coherent-asset-review .review-map-legend { display: flex; flex-wrap: wrap; gap: 6px 18px; color: var(--muted-foreground); margin: 5px 0 17px; }
+    #coherent-asset-review .review-list-head { display: flex; align-items: baseline; justify-content: space-between; flex-wrap: wrap; gap: 5px 14px; }
+    #coherent-asset-review .review-list-head h3 { margin: 0 0 6px; }
+    #coherent-asset-review .review-table { width: 100%; }
+    #coherent-asset-review .review-table td { vertical-align: top; overflow-wrap: anywhere; }
+    #coherent-asset-review .review-table th { white-space: nowrap; }
+    #coherent-asset-review .review-table .asset-name { font-weight: 500; }
+    #coherent-asset-review .review-table .asset-id { color: var(--muted-foreground); }
+    #coherent-asset-review .review-table .asset-status { white-space: nowrap; }
+    #coherent-asset-review .review-table details { margin-top: 3px; }
+    #coherent-asset-review .review-table summary { color: var(--muted-foreground); }
+    #coherent-asset-review .review-table .candidate-list { margin: 5px 0 0; padding-left: 18px; }
+    #coherent-asset-review .review-table .candidate-list li { overflow-wrap: anywhere; }
+    #coherent-asset-review .review-note { margin: 13px 0 0; color: var(--muted-foreground); }
+    @media (max-width: 600px) {
+      #coherent-asset-review .review-table th:nth-child(2),
+      #coherent-asset-review .review-table td:nth-child(2) { display: none; }
+    }
+  </style>
+  <div class="review-heading">
+    <h2>五个环境 · 资产核对</h2>
+    <span class="text-muted">COHERENT / 规划清单</span>
+  </div>
+  <p class="review-subtitle">选择环境，查看布局中的固定项和该环境全部规划实体的模型对应进度。</p>
+  <div class="review-controls viz-controls">
+    <label class="form-label" for="review-env">环境
+      <select class="form-select" id="review-env"></select>
+    </label>
+    <label class="form-label" for="review-status">模型状态
+      <select class="form-select" id="review-status">
+        <option value="all">全部</option>
+        <option value="source_backed">有原配置依据</option>
+        <option value="needs_model_selection">待选模型</option>
+        <option value="no_model_candidate">无当前候选</option>
+        <option value="non_dataset_entity">需单独处理</option>
+      </select>
+    </label>
+    <label class="form-label" for="review-search">查找名称、类别或型号
+      <input class="form-control" id="review-search" type="search" placeholder="例如 sunglasses_0">
+    </label>
+  </div>
+  <div class="review-meta" id="review-meta" aria-live="polite"></div>
+  <svg id="review-map" class="review-map" role="img" aria-label="环境布局图"></svg>
+  <div class="review-map-legend"><span>○ F：固定物体</span><span>□ D：门</span><span>△ R：机器人初始区</span><span>同坐标的标记已视觉错开</span><span>区域与坐标均为设计初稿</span></div>
+  <div class="review-list-head"><h3>资产清单</h3><span id="review-count" class="text-muted" aria-live="polite"></span></div>
+  <div class="table-responsive">
+    <table class="table table-sm review-table">
+      <thead><tr><th>物体标识</th><th>规划类别 / 类名</th><th>图上位置</th><th>模型对应</th><th class="text-end">任务数</th></tr></thead>
+      <tbody id="review-rows"></tbody>
+    </table>
+  </div>
+  <p class="review-note">“有原配置依据”仍需人工核对和仿真加载；“需单独处理”包含房间、地面、机器人及工具。图中只放置了固定项，其他物品的位置随具体任务确定。</p>
+</div>
+<script>
+(() => {
+  const data = __ENVIRONMENTS_DATA__;
+  const root = document.getElementById("coherent-asset-review");
+  const envSelect = root.querySelector("#review-env");
+  const statusSelect = root.querySelector("#review-status");
+  const search = root.querySelector("#review-search");
+  const meta = root.querySelector("#review-meta");
+  const map = root.querySelector("#review-map");
+  const rowsTarget = root.querySelector("#review-rows");
+  const countTarget = root.querySelector("#review-count");
+  const ns = "http://www.w3.org/2000/svg";
+  const statusNames = {
+    source_backed: "有原配置依据", needs_model_selection: "待选模型",
+    no_model_candidate: "无当前候选", non_dataset_entity: "需单独处理"
+  };
+  const zoneNames = {
+    livingroom_0: "客厅", bedroom_0: "卧室", childroom_0: "儿童房", kitchen_0: "厨房",
+    living_room_0: "客厅", living_room_1: "上生活区", utility_room_0: "杂物间",
+    grocery_store_0: "超市", restaurant_0: "餐厅", corridor_0: "走廊", garden_0: "花园"
+  };
+
+  function html(tag, className, content, parent) {
+    const el = document.createElement(tag);
+    if (className) el.className = className;
+    if (content !== undefined) el.textContent = content;
+    parent.appendChild(el);
+    return el;
+  }
+  function svg(tag, attrs, parent=map) {
+    const el = document.createElementNS(ns, tag);
+    for (const [key, value] of Object.entries(attrs)) el.setAttribute(key, String(value));
+    parent.appendChild(el);
+    return el;
+  }
+  function marker(x, y, label, kind, tooltip) {
+    const g = svg("g", {"data-tooltip": tooltip, "aria-label": tooltip});
+    if (kind === "fixed") svg("circle", {cx:x,cy:y,r:.29,class:"fixed-mark"},g);
+    if (kind === "door") svg("rect", {x:x-.3,y:y-.3,width:.6,height:.6,class:"door-mark"},g);
+    if (kind === "agent") svg("path", {d:`M${x} ${y-.34}L${x+.34} ${y+.28}L${x-.34} ${y+.28}Z`,class:"agent-mark"},g);
+    const text = svg("text", {x,y:y+.075,"text-anchor":"middle","font-size":.22,class:"mark-label"},g);
+    text.textContent = label;
+  }
+  function drawMap(env) {
+    map.replaceChildren();
+    const rects = Object.values(env.zones);
+    const minx = Math.min(...rects.map(r=>r[0]))-.7;
+    const maxx = Math.max(...rects.map(r=>r[2]))+.7;
+    const miny = Math.min(...rects.map(r=>r[1]))-.7;
+    const maxy = Math.max(...rects.map(r=>r[3]))+.7;
+    map.setAttribute("viewBox", `${minx} ${-maxy} ${maxx-minx} ${maxy-miny}`);
+    map.setAttribute("aria-label", `${env.env} ${env.title}的规划布局`);
+    Object.entries(env.zones).forEach(([name,r],i) => {
+      svg("rect", {x:r[0],y:-r[3],width:r[2]-r[0],height:r[3]-r[1],
+        fill:`var(--viz-series-${i%6+1})`,"fill-opacity":.18,class:"zone"});
+      const t=svg("text",{x:r[0]+.28,y:-r[3]+.46,"font-size":.28,class:"zone-label"});
+      t.textContent=env.env==="env4"&&name==="living_room_0"?"下生活区":zoneNames[name]||name;
+    });
+    Object.entries(env.subregions).forEach(([name,r],i) => {
+      svg("rect", {x:r[0],y:-r[3],width:r[2]-r[0],height:r[3]-r[1],
+        fill:`var(--viz-series-${(i+3)%6+1})`,"fill-opacity":.13,class:"subzone"});
+      const t=svg("text",{x:r[0]+.25,y:-r[3]+.45,"font-size":.25,class:"zone-label"});
+      t.textContent=name.includes("garage")?"车库":"草坪";
+    });
+    const positions = new Map();
+    const grouped = new Map();
+    Object.entries(env.fixed).forEach(([name,xy]) => {
+      const p=xy.join(","); if(!grouped.has(p)) grouped.set(p,{xy,names:[]});
+      grouped.get(p).names.push(name);
+    });
+    [...grouped.values()].forEach((group,i) => {
+      const tag=`F${i+1}`;
+      group.names.forEach(name=>positions.set(name,tag));
+      marker(group.xy[0],-group.xy[1],tag,"fixed",group.names.join(" / "));
+    });
+    env.duplicates.forEach((entry,i) => {
+      const tag=`F${grouped.size+i+1}`;
+      positions.set(`${entry.category}|${entry.prefab_name}`,tag);
+      marker(entry.xy[0],-entry.xy[1],tag,"fixed",`${entry.prefab_name} · 节点 ${entry.node_id}`);
+    });
+    Object.entries(env.doors).forEach(([name,xy],i) => {
+      const tag=`D${i+1}`; positions.set(name,tag);
+      marker(xy[0],-xy[1],tag,"door",name);
+    });
+    const occupied = new Set([...grouped.keys(), ...env.duplicates.map(item=>item.xy.join(","))]);
+    Object.entries(env.agents).forEach(([name,xy],i) => {
+      const tag=`R${i+1}`; positions.set(name,tag);
+      const overlapping=occupied.has(xy.join(","));
+      const x=overlapping?xy[0]+.52:xy[0];
+      const y=overlapping?-xy[1]-.52:-xy[1];
+      if(overlapping) svg("line",{x1:xy[0],y1:-xy[1],x2:x,y2:y,stroke:"var(--muted-foreground)","stroke-width":.02});
+      marker(x,y,tag,"agent",name);
+    });
+    return positions;
+  }
+  function displayPosition(row, env, positions) {
+    const exact=positions.get(`${row.category}|${row.name}`)||positions.get(row.name);
+    if(exact) return exact;
+    if(Object.hasOwn(env.zones,row.name)||Object.hasOwn(env.subregions,row.name)) return "区域";
+    if(row.category==="Floor") return "地面";
+    return "随任务";
+  }
+  function renderRows(env, positions) {
+    const query=search.value.trim().toLocaleLowerCase();
+    const status=statusSelect.value;
+    const filtered=env.rows.filter(row => (status==="all"||row.status===status) &&
+      (!query||[row.name,row.class,row.category,row.selected,...row.candidates].join(" ").toLocaleLowerCase().includes(query)));
+    rowsTarget.replaceChildren();
+    for(const row of filtered) {
+      const tr=html("tr",null,undefined,rowsTarget);
+      const name=html("td",null,undefined,tr);
+      html("span","asset-name",row.name,name);
+      const type=html("td",null,undefined,tr);
+      html("span",null,row.category,type);
+      html("div","asset-id",row.class,type);
+      html("td",null,displayPosition(row,env,positions),tr);
+      const model=html("td",null,undefined,tr);
+      html("span","asset-status",statusNames[row.status]||row.status,model);
+      if(row.selected) html("div",null,row.selected,model);
+      if(row.candidates.length||row.evidence) {
+        const detail=html("details",null,undefined,model);
+        html("summary",null,row.evidence?"依据与候选":`${row.candidates.length} 个候选模型`,detail);
+        if(row.evidence) html("div",null,row.evidence,detail);
+        if(row.candidates.length) {
+          const ul=html("ul","candidate-list",undefined,detail);
+          row.candidates.forEach(candidate=>html("li",null,candidate,ul));
+        }
+      }
+      html("td","text-end tabular-nums",String(row.tasks),tr);
+    }
+    countTarget.textContent=`显示 ${filtered.length} / ${env.rows.length} 项`;
+  }
+  function render() {
+    const env=data[Number(envSelect.value)];
+    const counts=Object.fromEntries(Object.keys(statusNames).map(key=>[key,env.rows.filter(row=>row.status===key).length]));
+    meta.replaceChildren();
+    [
+      ["任务",env.task_count],["规划项",env.rows.length],["有原配置依据",counts.source_backed],
+      ["待选模型",counts.needs_model_selection],["无当前候选",counts.no_model_candidate],
+      ["需单独处理",counts.non_dataset_entity]
+    ].forEach(([label,value])=>{
+      const span=html("span",null,undefined,meta);
+      html("strong",null,String(value),span);
+      span.append(` ${label}`);
+    });
+    const positions=drawMap(env);
+    renderRows(env,positions);
+    statusSelect.onchange=()=>renderRows(env,positions);
+    search.oninput=()=>renderRows(env,positions);
+  }
+  data.forEach((env,i)=>{
+    const option=html("option",null,`${env.env} · ${env.title}`,envSelect);
+    option.value=String(i);
+  });
+  envSelect.addEventListener("change",render);
+  render();
+})();
+</script>

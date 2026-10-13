@@ -1,0 +1,115 @@
+{
+  "schema_version": 1,
+  "selections": {
+    "env1|Appliances|fridge_xyejdx_0": {
+      "category": "fridge",
+      "model": "xyejdx",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/Merom_1_int_best.json 的同名实例 objects_info.init_info.fridge_xyejdx_0.args；另一场景配置也使用相同型号"
+    },
+    "env4|Door|door_vudhlc_0": {
+      "category": "door",
+      "model": "vudhlc",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.door_vudhlc_0.args"
+    },
+    "env4|Door|door_vudhlc_1": {
+      "category": "door",
+      "model": "vudhlc",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.door_vudhlc_1.args"
+    },
+    "env4|Door|door_vudhlc_2": {
+      "category": "door",
+      "model": "vudhlc",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.door_vudhlc_2.args"
+    },
+    "env4|Facility|grill_sxfjac_0": {
+      "category": "grill",
+      "model": "sxfjac",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.grill_sxfjac_0.args"
+    },
+    "env4|Facility|swing_yzhrgz_0": {
+      "category": "swing",
+      "model": "yzhrgz",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.swing_yzhrgz_0.args"
+    },
+    "env4|Food|kebab_cewhbv_0": {
+      "category": "kebab",
+      "model": "ezgwob",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_Task1.py 中 cfg['objects'] 的同名实例明确使用 kebab/ezgwob；名字中的 cewhbv 虽也是有效模型编号，却不是该配置选用的型号"
+    },
+    "env4|Furniture|bottom_cabinet_rhdbzv_0": {
+      "category": "bottom_cabinet",
+      "model": "rhdbzv",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.bottom_cabinet_rhdbzv_0.args"
+    },
+    "env4|Vehicle|car_supuws_0": {
+      "category": "car",
+      "model": "supuws",
+      "evidence": "原配置 OmniGibson/Benchmark/tasks/house_double_floor_lower_best_Task1.json 的同名实例 objects_info.init_info.car_supuws_0.args"
+    },
+    "env1|Furniture|coffee_table_gpkbiw_0": {
+      "category": "coffee_table",
+      "model": "gpkbiw",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/Pomaria_1_int/json/Pomaria_1_int_best.json 的同名实例 coffee_table_gpkbiw_0 明确使用 coffee_table/gpkbiw；模型入口文件存在"
+    },
+    "env1|Kitchenware|burner_pmntxh_0": {
+      "category": "burner",
+      "model": "pmntxh",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/Beechwood_0_int/json/Beechwood_0_int_best.json 的同名实例 burner_pmntxh_0 明确使用 burner/pmntxh；模型入口文件存在"
+    },
+    "env1|Kitchenware|sink_zexzrc_0": {
+      "category": "sink",
+      "model": "zexzrc",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/Beechwood_0_int/json/Beechwood_0_int_best.json 的同名实例 sink_zexzrc_0 明确使用 sink/zexzrc；模型入口文件存在"
+    },
+    "env2|Furniture|pedestal_table_xrrhik_0": {
+      "category": "pedestal_table",
+      "model": "xrrhik",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/grocery_store_cafe/json/grocery_store_cafe_best.json 的同名实例 pedestal_table_xrrhik_0 明确使用 pedestal_table/xrrhik；模型入口文件存在"
+    },
+    "env2|Furniture|pedestal_table_xrrhik_1": {
+      "category": "pedestal_table",
+      "model": "xrrhik",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/grocery_store_cafe/json/grocery_store_cafe_best.json 的同名实例 pedestal_table_xrrhik_1 明确使用 pedestal_table/xrrhik；模型入口文件存在"
+    },
+    "env3|Furniture|bar_jvkwcc_0": {
+      "category": "bar",
+      "model": "jvkwcc",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 bar_jvkwcc_0 明确使用 bar/jvkwcc；模型入口文件存在"
+    },
+    "env3|Furniture|bar_jvkwcc_1": {
+      "category": "bar",
+      "model": "jvkwcc",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 bar_jvkwcc_1 明确使用 bar/jvkwcc；模型入口文件存在"
+    },
+    "env3|Furniture|coffee_table_zisekv_0": {
+      "category": "coffee_table",
+      "model": "zisekv",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 coffee_table_zisekv_0 明确使用 coffee_table/zisekv；模型入口文件存在"
+    },
+    "env3|Furniture|coffee_table_zisekv_1": {
+      "category": "coffee_table",
+      "model": "zisekv",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 coffee_table_zisekv_1 明确使用 coffee_table/zisekv；模型入口文件存在"
+    },
+    "env3|Furniture|ottoman_mjmkdw_0": {
+      "category": "ottoman",
+      "model": "mjmkdw",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 ottoman_mjmkdw_0 明确使用 ottoman/mjmkdw；模型入口文件存在"
+    },
+    "env3|Furniture|ottoman_mjmkdw_1": {
+      "category": "ottoman",
+      "model": "mjmkdw",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 ottoman_mjmkdw_1 明确使用 ottoman/mjmkdw；模型入口文件存在"
+    },
+    "env3|Furniture|sofa_ewview_0": {
+      "category": "sofa",
+      "model": "ewview",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 sofa_ewview_0 明确使用 sofa/ewview；模型入口文件存在"
+    },
+    "env3|Furniture|sofa_ewview_1": {
+      "category": "sofa",
+      "model": "ewview",
+      "evidence": "原配置 OmniGibson/omnigibson/data/og_dataset/scenes/restaurant_brunch/json/restaurant_brunch_best.json 的同名实例 sofa_ewview_1 明确使用 sofa/ewview；模型入口文件存在"
+    }
+  }
+}

@@ -1,0 +1,151 @@
+<div id="seven-scene-plans" class="scene-plans">
+  <style>
+    #seven-scene-plans { color: var(--foreground); }
+    #seven-scene-plans .scene-controls { display: flex; flex-wrap: wrap; align-items: end; gap: 12px; margin: 10px 0 14px; }
+    #seven-scene-plans .scene-controls label { min-width: 230px; max-width: 100%; }
+    #seven-scene-plans .scene-controls select { width: 100%; }
+    #seven-scene-plans .scene-layout { display: grid; grid-template-columns: minmax(0, 1fr) minmax(185px, 230px); gap: 18px; align-items: start; }
+    #seven-scene-plans .scene-map { width: 100%; display: block; border: 1px solid var(--border); }
+    #seven-scene-plans .scene-map text { fill: var(--foreground); font-weight: 500; font-family: inherit; }
+    #seven-scene-plans .scene-caption { color: var(--muted-foreground); margin: 5px 0 12px; }
+    #seven-scene-plans .scene-key h3 { margin: 0 0 7px; }
+    #seven-scene-plans .scene-key ul { list-style: none; padding: 0; margin: 0 0 16px; }
+    #seven-scene-plans .scene-key li { display: flex; align-items: baseline; gap: 6px; padding: 2px 0; overflow-wrap: anywhere; }
+    #seven-scene-plans .scene-key .key-id { flex: 0 0 24px; font-weight: 500; font-variant-numeric: tabular-nums; }
+    #seven-scene-plans .scene-key small { display: block; color: var(--muted-foreground); font-size: .85em; }
+    #seven-scene-plans .scene-help { color: var(--muted-foreground); margin-top: 10px; }
+    @media (max-width: 670px) { #seven-scene-plans .scene-layout { grid-template-columns: 1fr; } #seven-scene-plans .scene-key ul { columns: 2; } #seven-scene-plans .scene-key li { break-inside: avoid; } }
+    @media (max-width: 420px) { #seven-scene-plans .scene-key ul { columns: 1; } }
+  </style>
+  <h2>七个场景的俯视布局</h2>
+  <div class="scene-controls viz-controls">
+    <label class="form-label" for="seven-scene-picker">选择场景
+      <select id="seven-scene-picker" class="form-select"></select>
+    </label>
+  </div>
+  <div class="scene-caption" id="seven-scene-caption" aria-live="polite"></div>
+  <div class="scene-layout">
+    <svg id="seven-scene-map" class="scene-map" role="img" aria-label="场景俯视图"></svg>
+    <div id="seven-scene-key" class="scene-key" aria-label="图例"></div>
+  </div>
+  <div class="scene-help" id="seven-scene-help"></div>
+</div>
+<script>
+(() => {
+  const scenes = __SCENES_DATA__;
+  const root = document.getElementById("seven-scene-plans");
+  const picker = root.querySelector("#seven-scene-picker");
+  const svg = root.querySelector("#seven-scene-map");
+  const key = root.querySelector("#seven-scene-key");
+  const caption = root.querySelector("#seven-scene-caption");
+  const help = root.querySelector("#seven-scene-help");
+  const ns = "http://www.w3.org/2000/svg";
+  const series = [1, 2, 3, 4, 5, 6].map(i => `var(--viz-series-${i})`);
+
+  function node(name, attrs, parent) {
+    const el = document.createElementNS(ns, name);
+    for (const [k, v] of Object.entries(attrs || {})) el.setAttribute(k, String(v));
+    parent.appendChild(el);
+    return el;
+  }
+  function list(title, items) {
+    const h = document.createElement("h3"); h.textContent = title; key.appendChild(h);
+    const ul = document.createElement("ul"); key.appendChild(ul);
+    for (const item of items) {
+      const li = document.createElement("li"); ul.appendChild(li);
+      const id = document.createElement("span"); id.className = "key-id"; id.textContent = item.id; li.appendChild(id);
+      const body = document.createElement("span"); body.textContent = item.label; li.appendChild(body);
+      if (item.name && item.name !== item.label) {
+        const small = document.createElement("small"); small.textContent = item.name; body.appendChild(small);
+      }
+    }
+  }
+  function marker(x, y, index, unit, label, shape) {
+    const group = node("g", {"aria-label": label, "data-tooltip": label}, svg);
+    if (shape === "door" || shape === "room") {
+      node("rect", {x:x-unit*.7, y:y-unit*.7, width:unit*1.4, height:unit*1.4,
+        fill:"var(--background)", stroke:"var(--foreground)", "stroke-width":unit*.12}, group);
+    } else if (shape === "agent") {
+      node("path", {d:`M${x} ${y-unit}L${x+unit} ${y+unit*.8}L${x-unit} ${y+unit*.8}Z`,
+        fill:"var(--background)", stroke:"var(--foreground)", "stroke-width":unit*.12}, group);
+    } else {
+      node("circle", {cx:x, cy:y, r:unit*.95, fill:"var(--background)",
+        stroke:"var(--foreground)", "stroke-width":unit*.12}, group);
+    }
+    const t = node("text", {x, y:y+unit*.34, "text-anchor":"middle", "font-size":unit*.86}, group);
+    t.textContent = index;
+  }
+  function original(scene) {
+    const [minx, miny, maxx, maxy] = scene.bounds;
+    const margin = Math.max(maxx-minx,maxy-miny)*.035;
+    const span = Math.max(maxx-minx,maxy-miny);
+    const unit = span/48;
+    svg.setAttribute("viewBox", `${minx-margin} ${miny-margin} ${maxx-minx+2*margin} ${maxy-miny+2*margin}`);
+    for (const [i, room] of scene.rooms.entries()) {
+      node("path", {d:room.path, fill:series[i%6], "fill-opacity":.32}, svg);
+      marker(room.xy[0], room.xy[1], room.id, unit, `${room.id} ${room.label}`, "room");
+    }
+    scene.objects.forEach((object, i) => marker(object.xy[0], object.xy[1], i+1, unit*.78,
+      `${i+1} ${object.label}：${object.name}`, "object"));
+    list("房间（底图）", scene.rooms.map(r => ({id:r.id, label:r.label, name:r.name})));
+    list("主要家具（原始坐标）", scene.objects.map((o,i) => ({id:i+1, label:o.label, name:o.name})));
+  }
+  function proposed(scene) {
+    const all = scene.zones.map(z => z.rect);
+    const minx = Math.min(...all.map(r => r[0]));
+    const miny = Math.min(...all.map(r => r[1]));
+    const maxx = Math.max(...all.map(r => r[2]));
+    const maxy = Math.max(...all.map(r => r[3]));
+    const span = Math.max(maxx-minx,maxy-miny);
+    const unit = span/48;
+    const pad = unit*2;
+    svg.setAttribute("viewBox", `${minx-pad} ${-maxy-pad} ${maxx-minx+2*pad} ${maxy-miny+2*pad}`);
+    scene.zones.forEach((zone,i) => {
+      const [x0,y0,x1,y1] = zone.rect;
+      node("rect", {x:x0,y:-y1,width:x1-x0,height:y1-y0,fill:series[i%6],"fill-opacity":.2,
+        stroke:"var(--border)","stroke-width":unit*.09}, svg);
+      const label = node("text", {x:x0+unit*.65,y:-y1+unit*1.65,"font-size":unit*1.05}, svg);
+      label.textContent = zone.label;
+    });
+    scene.subregions.forEach((zone,i) => {
+      const [x0,y0,x1,y1] = zone.rect;
+      node("rect", {x:x0,y:-y1,width:x1-x0,height:y1-y0,fill:series[(i+4)%6],"fill-opacity":.19,
+        stroke:"var(--border)","stroke-dasharray":`${unit*.35} ${unit*.3}`,"stroke-width":unit*.1}, svg);
+      const label = node("text", {x:x0+unit*.4,y:-y1+unit*1.4,"font-size":unit*.95}, svg);
+      label.textContent = zone.label;
+    });
+    const grouped = new Map();
+    for (const object of scene.objects) {
+      const location = object.xy.map(x => Math.round(x*10)/10).join(",");
+      if (!grouped.has(location)) grouped.set(location, {xy:object.xy, objects:[]});
+      grouped.get(location).objects.push(object);
+    }
+    const objects = [...grouped.values()];
+    objects.forEach((group,i) => marker(group.xy[0],-group.xy[1],i+1,unit,
+      `${i+1} ${group.objects.map(o=>o.label+"："+o.name).join("；")}`,"object"));
+    scene.doors.forEach((door,i) => marker(door.xy[0],-door.xy[1],`D${i+1}`,unit,
+      `门 ${door.name}`,"door"));
+    scene.agents.forEach((agent,i) => marker(agent.xy[0],-agent.xy[1],`R${i+1}`,unit,
+      `机器人 ${agent.name}`,"agent"));
+    list("固定物体", objects.map((group,i) => ({id:i+1,
+      label:group.objects.map(o=>o.label).join("、"), name:group.objects.map(o=>o.name).join(" / ")})));
+    list("门", scene.doors.map((d,i) => ({id:`D${i+1}`,label:d.name})));
+    list("机器人初始区", scene.agents.map((a,i) => ({id:`R${i+1}`,label:a.name})));
+  }
+  function draw(index) {
+    const scene = scenes[index];
+    svg.replaceChildren(); key.replaceChildren();
+    svg.setAttribute("aria-label", scene.title + "的俯视布局");
+    caption.textContent = scene.note;
+    help.textContent = scene.kind === "original"
+      ? "色块是真实房间轮廓；方块数字对应房间，圆点数字对应主要家具。两组编号分别看右侧清单。"
+      : "色块是暂定区域；圆点是固定物体，方块是门，三角形是机器人初始区。编号与右侧清单对应。";
+    if (scene.kind === "original") original(scene); else proposed(scene);
+  }
+  scenes.forEach((scene,i) => {
+    const option = document.createElement("option"); option.value = String(i); option.textContent = scene.title; picker.appendChild(option);
+  });
+  picker.addEventListener("change", () => draw(Number(picker.value)));
+  draw(0);
+})();
+</script>

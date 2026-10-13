@@ -1,0 +1,954 @@
+{
+  "schema_version": 1,
+  "env": "env0",
+  "task_id": 1,
+  "source_index": 1,
+  "source": "env/env0.json",
+  "source_sha256": "743e579aed00d731f840086d83f46fdaf0e9d765baea177440667e40f63c8ce0",
+  "goal_instruction": [
+    "The <quadrotor>(22) lands on the <dining table>(13)."
+  ],
+  "task_goal": {
+    "on_<quadrotor>(22)_<dining table>(13)": [
+      1,
+      []
+    ]
+  },
+  "entities": [
+    {
+      "id": 0,
+      "category": "Rooms",
+      "class_name": "bedroom",
+      "prefab_name": "bedroom_0",
+      "properties": [],
+      "states": [],
+      "key": "env0/task1/node0",
+      "in_goal": false,
+      "inferred_rooms": [
+        "bedroom_0"
+      ],
+      "initial_relations": [],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 1,
+      "category": "Floor",
+      "class_name": "bedroom floor",
+      "prefab_name": "bedroom_0_floor",
+      "properties": [
+        "SURFACES",
+        "LANDABLE",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node1",
+      "in_goal": false,
+      "inferred_rooms": [
+        "bedroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 1,
+          "to_id": 0,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 2,
+      "category": "Rooms",
+      "class_name": "childroom",
+      "prefab_name": "childroom_0",
+      "properties": [],
+      "states": [],
+      "key": "env0/task1/node2",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 3,
+      "category": "Floor",
+      "class_name": "childroom floor",
+      "prefab_name": "childroom_0_floor",
+      "properties": [
+        "SURFACES",
+        "LANDABLE",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node3",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 3,
+          "to_id": 2,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 4,
+      "category": "Rooms",
+      "class_name": "livingroom",
+      "prefab_name": "livingroom_0",
+      "properties": [],
+      "states": [],
+      "key": "env0/task1/node4",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 5,
+      "category": "Floor",
+      "class_name": "livingroom floor",
+      "prefab_name": "livingroom_0_floor",
+      "properties": [
+        "SURFACES",
+        "LANDABLE",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node5",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 5,
+          "to_id": 4,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 6,
+      "category": "Rooms",
+      "class_name": "kitchen",
+      "prefab_name": "kitchen_0",
+      "properties": [],
+      "states": [],
+      "key": "env0/task1/node6",
+      "in_goal": false,
+      "inferred_rooms": [
+        "kitchen_0"
+      ],
+      "initial_relations": [],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 7,
+      "category": "Floor",
+      "class_name": "kitchen floor",
+      "prefab_name": "kitchen_0_floor",
+      "properties": [
+        "SURFACES",
+        "LANDABLE",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node7",
+      "in_goal": false,
+      "inferred_rooms": [
+        "kitchen_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 7,
+          "to_id": 6,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 8,
+      "category": "Doors",
+      "class_name": "door",
+      "prefab_name": "Door_0_4",
+      "properties": [
+        "CAN_OPEN"
+      ],
+      "states": [
+        "CLOSED"
+      ],
+      "key": "env0/task1/node8",
+      "in_goal": false,
+      "inferred_rooms": [],
+      "initial_relations": [
+        {
+          "from_id": 8,
+          "to_id": 0,
+          "relation_type": "LEADING TO"
+        },
+        {
+          "from_id": 8,
+          "to_id": 4,
+          "relation_type": "LEADING TO"
+        }
+      ],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 9,
+      "category": "Doors",
+      "class_name": "door",
+      "prefab_name": "Door_2_4",
+      "properties": [
+        "CAN_OPEN"
+      ],
+      "states": [
+        "OPEN_FOREVER"
+      ],
+      "key": "env0/task1/node9",
+      "in_goal": false,
+      "inferred_rooms": [],
+      "initial_relations": [
+        {
+          "from_id": 9,
+          "to_id": 2,
+          "relation_type": "LEADING TO"
+        },
+        {
+          "from_id": 9,
+          "to_id": 4,
+          "relation_type": "LEADING TO"
+        }
+      ],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 10,
+      "category": "Doors",
+      "class_name": "door",
+      "prefab_name": "Door_4_6",
+      "properties": [],
+      "states": [
+        "OPEN_FOREVER"
+      ],
+      "key": "env0/task1/node10",
+      "in_goal": false,
+      "inferred_rooms": [],
+      "initial_relations": [
+        {
+          "from_id": 10,
+          "to_id": 4,
+          "relation_type": "LEADING TO"
+        },
+        {
+          "from_id": 10,
+          "to_id": 6,
+          "relation_type": "LEADING TO"
+        }
+      ],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 11,
+      "category": "Furniture",
+      "class_name": "sofa",
+      "prefab_name": "sofa_0",
+      "properties": [
+        "SURFACES",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node11",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 11,
+          "to_id": 5,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 12,
+      "category": "Furniture",
+      "class_name": "coffee table",
+      "prefab_name": "coffeetable_0",
+      "properties": [
+        "SURFACES",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node12",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 12,
+          "to_id": 5,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 13,
+      "category": "Furniture",
+      "class_name": "dining table",
+      "prefab_name": "diningtable_0",
+      "properties": [
+        "SURFACES",
+        "HIGH_HEIGHT",
+        "LANDABLE"
+      ],
+      "states": [],
+      "key": "env0/task1/node13",
+      "in_goal": true,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 13,
+          "to_id": 5,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 14,
+      "category": "Appliances",
+      "class_name": "fridge",
+      "prefab_name": "fridge_0",
+      "properties": [
+        "CAN_OPEN",
+        "HAS_SWITCH",
+        "CONTAINERS",
+        "HAS_PLUG"
+      ],
+      "states": [
+        "CLOSED"
+      ],
+      "key": "env0/task1/node14",
+      "in_goal": false,
+      "inferred_rooms": [
+        "kitchen_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 14,
+          "to_id": 7,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 22,
+      "category": "Agents",
+      "class_name": "quadrotor",
+      "prefab_name": "quadrotor_0",
+      "properties": [
+        "MOVABLE",
+        "FLYABLE",
+        "HAVE_A_BASKET"
+      ],
+      "states": [
+        "LAND"
+      ],
+      "key": "env0/task1/node22",
+      "in_goal": true,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 22,
+          "to_id": 3,
+          "relation_type": "ON"
+        },
+        {
+          "from_id": 22,
+          "to_id": 2,
+          "relation_type": "INSIDE"
+        },
+        {
+          "from_id": 22,
+          "to_id": 25,
+          "relation_type": "WITH"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 23,
+      "category": "Agents",
+      "class_name": "robot dog",
+      "prefab_name": "aliengo_0",
+      "properties": [
+        "MOVABLE"
+      ],
+      "states": [],
+      "key": "env0/task1/node23",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 23,
+          "to_id": 5,
+          "relation_type": "ON"
+        },
+        {
+          "from_id": 23,
+          "to_id": 4,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 24,
+      "category": "Agents",
+      "class_name": "robot arm",
+      "prefab_name": "franka_0",
+      "properties": [
+        "ON_HIGH_SURFACE"
+      ],
+      "states": [],
+      "key": "env0/task1/node24",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 24,
+          "to_id": 13,
+          "relation_type": "ON"
+        },
+        {
+          "from_id": 24,
+          "to_id": 4,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 25,
+      "category": "AgentTool",
+      "class_name": "basket",
+      "prefab_name": "quadrotor_0_basket",
+      "properties": [
+        "MOVABLE",
+        "CONTAINERS",
+        "WITH_QUADROTOR"
+      ],
+      "states": [
+        "OPEN_FOREVER"
+      ],
+      "key": "env0/task1/node25",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 25,
+          "to_id": 3,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 26,
+      "category": "Food",
+      "class_name": "bread",
+      "prefab_name": "bread_1",
+      "properties": [
+        "GRABABLE",
+        "MOVABLE",
+        "HEATABLE",
+        "ON_HIGH_SURFACE"
+      ],
+      "states": [
+        "HOT"
+      ],
+      "key": "env0/task1/node26",
+      "in_goal": false,
+      "inferred_rooms": [],
+      "initial_relations": [],
+      "has_initial_placement_relation": false
+    },
+    {
+      "id": 27,
+      "category": "Furniture",
+      "class_name": "bed",
+      "prefab_name": "bed_0",
+      "properties": [
+        "SURFACES",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node27",
+      "in_goal": false,
+      "inferred_rooms": [
+        "bedroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 27,
+          "to_id": 1,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 28,
+      "category": "Furniture",
+      "class_name": "bed",
+      "prefab_name": "bed_1",
+      "properties": [
+        "SURFACES",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node28",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 28,
+          "to_id": 3,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 32,
+      "category": "Furniture",
+      "class_name": "kitchen table",
+      "prefab_name": "kitchentable_0",
+      "properties": [
+        "SURFACES",
+        "LOW_HEIGHT"
+      ],
+      "states": [],
+      "key": "env0/task1/node32",
+      "in_goal": false,
+      "inferred_rooms": [
+        "kitchen_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 32,
+          "to_id": 7,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 33,
+      "category": "Furniture",
+      "class_name": "high table",
+      "prefab_name": "high_table_bedroom",
+      "properties": [
+        "SURFACES",
+        "HIGH_HEIGHT",
+        "LANDABLE"
+      ],
+      "states": [],
+      "key": "env0/task1/node33",
+      "in_goal": false,
+      "inferred_rooms": [
+        "bedroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 33,
+          "to_id": 1,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 34,
+      "category": "Furniture",
+      "class_name": "cabinet",
+      "prefab_name": "cabinet_childroom",
+      "properties": [
+        "CONTAINERS",
+        "CAN_OPEN",
+        "LOW_HEIGHT",
+        "SURFACES"
+      ],
+      "states": [
+        "CLOSED"
+      ],
+      "key": "env0/task1/node34",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 34,
+          "to_id": 3,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 35,
+      "category": "Furniture",
+      "class_name": "high kitchen table",
+      "prefab_name": "high_kitchentable_kitchen",
+      "properties": [
+        "SURFACES",
+        "HIGH_HEIGHT",
+        "LANDABLE"
+      ],
+      "states": [],
+      "key": "env0/task1/node35",
+      "in_goal": false,
+      "inferred_rooms": [
+        "kitchen_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 35,
+          "to_id": 7,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 44,
+      "category": "Office_supplies",
+      "class_name": "textbook",
+      "prefab_name": "Textbook_childroom",
+      "properties": [
+        "GRABABLE",
+        "MOVABLE"
+      ],
+      "states": [],
+      "key": "env0/task1/node44",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 44,
+          "to_id": 28,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 45,
+      "category": "Toys",
+      "class_name": "toy box",
+      "prefab_name": "Toybox_childroom",
+      "properties": [
+        "CONTAINERS"
+      ],
+      "states": [
+        "OPEN_FOREVER"
+      ],
+      "key": "env0/task1/node45",
+      "in_goal": false,
+      "inferred_rooms": [
+        "childroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 45,
+          "to_id": 3,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 50,
+      "category": "Agents",
+      "class_name": "robot arm",
+      "prefab_name": "robot_arm_bedroom",
+      "properties": [
+        "ON_HIGH_SURFACE"
+      ],
+      "states": [],
+      "key": "env0/task1/node50",
+      "in_goal": false,
+      "inferred_rooms": [
+        "bedroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 50,
+          "to_id": 33,
+          "relation_type": "ON"
+        },
+        {
+          "from_id": 50,
+          "to_id": 0,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 53,
+      "category": "Tableware",
+      "class_name": "plate",
+      "prefab_name": "plate_1",
+      "properties": [
+        "GRABABLE",
+        "MOVABLE",
+        "CONTAINERS"
+      ],
+      "states": [
+        "OPEN_FOREVER"
+      ],
+      "key": "env0/task1/node53",
+      "in_goal": false,
+      "inferred_rooms": [
+        "kitchen_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 53,
+          "to_id": 14,
+          "relation_type": "INSIDE"
+        }
+      ],
+      "has_initial_placement_relation": true
+    },
+    {
+      "id": 55,
+      "category": "Accessories",
+      "class_name": "sunglasses",
+      "prefab_name": "sunglasses_0",
+      "properties": [
+        "GRABABLE",
+        "MOVABLE",
+        "ON_HIGH_SURFACE"
+      ],
+      "states": [],
+      "key": "env0/task1/node55",
+      "in_goal": false,
+      "inferred_rooms": [
+        "livingroom_0"
+      ],
+      "initial_relations": [
+        {
+          "from_id": 55,
+          "to_id": 13,
+          "relation_type": "ON"
+        }
+      ],
+      "has_initial_placement_relation": true
+    }
+  ],
+  "edges": [
+    {
+      "from_id": 1,
+      "to_id": 0,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 3,
+      "to_id": 2,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 5,
+      "to_id": 4,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 7,
+      "to_id": 6,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 8,
+      "to_id": 0,
+      "relation_type": "LEADING TO"
+    },
+    {
+      "from_id": 8,
+      "to_id": 4,
+      "relation_type": "LEADING TO"
+    },
+    {
+      "from_id": 9,
+      "to_id": 2,
+      "relation_type": "LEADING TO"
+    },
+    {
+      "from_id": 9,
+      "to_id": 4,
+      "relation_type": "LEADING TO"
+    },
+    {
+      "from_id": 10,
+      "to_id": 4,
+      "relation_type": "LEADING TO"
+    },
+    {
+      "from_id": 10,
+      "to_id": 6,
+      "relation_type": "LEADING TO"
+    },
+    {
+      "from_id": 11,
+      "to_id": 5,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 12,
+      "to_id": 5,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 13,
+      "to_id": 5,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 14,
+      "to_id": 7,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 22,
+      "to_id": 3,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 22,
+      "to_id": 2,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 23,
+      "to_id": 5,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 23,
+      "to_id": 4,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 24,
+      "to_id": 13,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 24,
+      "to_id": 4,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 22,
+      "to_id": 25,
+      "relation_type": "WITH"
+    },
+    {
+      "from_id": 25,
+      "to_id": 3,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 27,
+      "to_id": 1,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 28,
+      "to_id": 3,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 32,
+      "to_id": 7,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 33,
+      "to_id": 1,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 34,
+      "to_id": 3,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 35,
+      "to_id": 7,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 44,
+      "to_id": 28,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 45,
+      "to_id": 3,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 50,
+      "to_id": 33,
+      "relation_type": "ON"
+    },
+    {
+      "from_id": 50,
+      "to_id": 0,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 53,
+      "to_id": 14,
+      "relation_type": "INSIDE"
+    },
+    {
+      "from_id": 55,
+      "to_id": 13,
+      "relation_type": "ON"
+    }
+  ],
+  "graph_issues": []
+}

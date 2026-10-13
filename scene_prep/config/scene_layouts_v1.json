@@ -1,0 +1,187 @@
+{
+  "status": "design_only_not_simulation_verified",
+  "units": "m",
+  "axes": "x_right_y_up_z_up",
+  "coordinates_are": "provisional_ground_plan_centers",
+  "task_rule": "Reset base layout and instantiate task-specific nodes and relations from each task's init_graph.",
+  "environments": {
+    "env0": {
+      "source": "env/env0.json",
+      "zones": {
+        "livingroom_0": [-1, -3, 5, 3],
+        "bedroom_0": [-5, 1, -1, 5],
+        "childroom_0": [-5, -3, -1, 1],
+        "kitchen_0": [5, -3, 9, 3]
+      },
+      "doors": {
+        "Door_0_4": [-1, 2],
+        "Door_2_4": [-1, -1],
+        "Door_4_6": [5, 0]
+      },
+      "fixed": {
+        "sofa_0": [0, 2],
+        "coffeetable_0": [1, 1],
+        "diningtable_0": [3, 0],
+        "bed_0": [-3, 3],
+        "bed_1": [-3, -1],
+        "high_table_bedroom": [-2, 4],
+        "cabinet_childroom": [-4, -2],
+        "fridge_0": [8, 2],
+        "kitchentable_0": [6.5, 1],
+        "high_kitchentable_kitchen": [7, -1]
+      },
+      "task_specific_suggested": {
+        "microwave_0": [3, 0],
+        "coffeemachine_0": [3, 0]
+      },
+      "agent_staging": {
+        "quadrotor_0": [0, -1.5],
+        "aliengo_0": [1, -2],
+        "franka_0": [3, 0],
+        "robot_arm_bedroom": [-2, 4]
+      }
+    },
+    "env1": {
+      "source": "env/env1.json",
+      "zones": {
+        "living_room_0": [-5, -3, 0, 3],
+        "kitchen_0": [0, -3, 5, 3],
+        "utility_room_0": [-5, 3, 0, 6]
+      },
+      "doors": {
+        "Door_0_2": [0, 0],
+        "Door_livingroom_utilityroom": [-2, 3]
+      },
+      "fixed": {
+        "coffee_table_gpkbiw_0": [-2, 0],
+        "chair_0": [-4, -1],
+        "chair_1": [-3, -1],
+        "low_bookshelf_livingroom_0": [-4, 2],
+        "low_bookshelf_livingroom_1": [-2, 2],
+        "kitchen_table_0": [2, 1],
+        "sink_zexzrc_0": [1.4, 1],
+        "burner_pmntxh_0": [2.8, 1],
+        "dining_table_uhrsex_0": [3, -1.5],
+        "fridge_xyejdx_0": [4, 2],
+        "trash_can_0": [4, -2],
+        "storage_shelf_utilityroom_0": [-3, 4.5],
+        "box_utilityroom_0": [-1.5, 4.5]
+      },
+      "agent_staging": {
+        "quadrotor_0": [-1, -2],
+        "aliengo_0": [-4, 0],
+        "franka_0": [2, 1],
+        "franka_arm_kitchen": [3, -1.5]
+      }
+    },
+    "env2": {
+      "source": "env/env2.json",
+      "zones": {
+        "grocery_store_0": [-6, -4, 6, 4]
+      },
+      "doors": {},
+      "fixed": {
+        "display_table_0": [-3, 1],
+        "display_bin_prtqlw_0": [-3.7, 1],
+        "display_bin_prtqlw_1": [-3, 1],
+        "display_bin_prtqlw_2": [-2.3, 1],
+        "display_table_1": [0, 1],
+        "pedestal_table_xrrhik_0": [-3, -2],
+        "pedestal_table_xrrhik_1": [0, -2],
+        "grocery_shelf_0": [4, 1],
+        "checkout_counter_cowjqr_0": [3, -2],
+        "cash_register_strtoe_0": [3.7, -2],
+        "shopping_basket_0": [2.5, -2],
+        "bucket_0": [-4, -3],
+        "carton_0": [-5, 3]
+      },
+      "duplicate_node_instances": [
+        {"node_id": 23, "prefab_name": "trash_can_0", "category": "CleaningTool", "xy": [-5, -3]},
+        {"node_id": 38, "prefab_name": "trash_can_0", "category": "Container", "xy": [-5, -2]}
+      ],
+      "agent_staging": {
+        "quadrotor_0": [-1, 3],
+        "aliengo_0": [0, -3],
+        "franka_0": [-3, 1],
+        "franka_1": [3, -2]
+      }
+    },
+    "env3": {
+      "source": "env/env3.json",
+      "zones": {
+        "restaurant_0": [-6, -4, 6, 4]
+      },
+      "doors": {},
+      "fixed": {
+        "dining_table_hmzwxn_0": [-3, 1.5],
+        "dining_table_hmzwxn_1": [0, 1.5],
+        "coffee_table_zisekv_0": [-3, -1.5],
+        "coffee_table_zisekv_1": [0, -1.5],
+        "sofa_ewview_0": [-5, -2],
+        "sofa_ewview_1": [1, -3],
+        "ottoman_mjmkdw_0": [-4, -3],
+        "ottoman_mjmkdw_1": [2, -3],
+        "bar_jvkwcc_0": [3, 1.5],
+        "bar_jvkwcc_1": [3, -1.5],
+        "coffee_maker_artpwc_0s": [3, 1.5],
+        "cash_register_strtoe_0": [3, -1.5]
+      },
+      "task_specific_suggested": {
+        "tableware_recycling_table": [5, 0],
+        "toaster_oven_xyz": [3, 1.5],
+        "trash_can_1": [5, -3],
+        "trash_can_xyz": [5, -3]
+      },
+      "agent_staging": {
+        "quadrotor_0": [-1, 3],
+        "aliengo_0": [-1, -3],
+        "franka_0": [3, 1.5],
+        "franka_1": [3, -1.5]
+      }
+    },
+    "env4": {
+      "source": "env/env4.json",
+      "prototype_elevation": "all_zones_same_floor_height_pending_vertical_design",
+      "zones": {
+        "living_room_0": [-7, -3, -2, 3],
+        "corridor_0": [-2, -1, 2, 1],
+        "living_room_1": [2, -3, 7, 3],
+        "garden_0": [-7, 3, 7, 9]
+      },
+      "subregions": {
+        "garage_floor_0": [-7, 4, -3, 8],
+        "lawn_ogzsvf_0": [-2, 4, 2, 8]
+      },
+      "doors": {
+        "door_vudhlc_0": [-4, 3],
+        "door_vudhlc_1": [2, 0],
+        "door_vudhlc_2": [-2, 0]
+      },
+      "fixed": {
+        "lower coffee table": [-5, 0],
+        "dining_table_hmzwxn_0": [-3.5, -1.5],
+        "sofa_xyz": [-5, 2],
+        "bottom_cabinet_rhdbzv_0": [-6, -2],
+        "upper coffee table": [4, 0],
+        "upper bed": [5, 2],
+        "garage_table_0": [-5, 5.5],
+        "car_supuws_0": [-6, 7],
+        "lawn_table_0": [0, 5],
+        "swing_yzhrgz_0": [0, 7],
+        "swing table 0": [1, 7],
+        "grill_table_0": [5, 6],
+        "grill_sxfjac_0": [5, 6],
+        "mailbox_bktljr_0": [-3, 3.5]
+      },
+      "task_specific_suggested": {
+        "fridge_0": [-6, 1],
+        "fridge_xyz": [-6, 1]
+      },
+      "agent_staging": {
+        "quadrotor_0": [-4, -2.5],
+        "aliengo_0": [0, 5],
+        "franka_0": [-3.5, -1.5]
+      }
+    }
+  }
+}
